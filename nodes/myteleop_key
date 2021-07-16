@@ -1,0 +1,15 @@
+#!/usr/bin/env python 
+
+import rospy 
+from geometry_msgs.msg import twist 
+import sys, select, tty, termios
+#tty and termious are linux operations 
+
+
+
+#initialize velocities and step size lin/angular
+
+
+def key():
+pass
+

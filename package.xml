@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>myteleop</name>
+  <version>1.0.0</version>
+  <description>
+    Custom teleop keyboard for controlling turtlebot3
+  </description>
+  <license>BSD</license>
+  <author>Kris Swartzbaugh</author>
+  <author email="swartzbaugh.k@gmail.com">Kris</author>
+  <maintainer email = "swartzbaugh.k@gmail.com">Kris Swartzbaugh</maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+</package>

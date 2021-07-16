@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+Above: If you have several versions of Python installed, /usr/bin/env will ensure the interpreter used is the first one on your environment's $PATH.
+
+python imports (rospy, gemoetry_msgs.msg -> twist, sys, select, os, tty, termios (termios and ttty linux) 
+
+
+initialize velocoties 
+burger lin =.22, angle = 2.84
+waffle lin = .26 angle = 1.8
+
+lin step size = .01 
+ang = .1
+
+
+msg = output message for system control 
+
+
+def getKey():
+	#hint: sys.stdin, select.select,tty.setraw
+	termios.tscsettarr
+	
+	
+
+make sure velocity steps are smooth, slow, within bounds 
+
+
+if __name__=="__main__":
+
+	initialize node and publishers
+	
+	 initialize target and control velocities 
+	 
+	 try:
+	 	printmsg
+	 	while(1)
+	 		set velocities based on keys 
+	 		
+ 		initialize twist
+ 		add velocities to twist 
+ 		
+ 		publish twist 
+	except:
+		print error 
+	finally:
+		twist to 0 and publish 
+	 		
+	
+ 		
+	
