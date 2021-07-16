@@ -1,15 +1,69 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 
-import rospy 
-from geometry_msgs.msg import twist 
+import rospy
+from geometry_msgs.msg import Twist
 import sys, select, tty, termios
-#tty and termious are linux operations 
+#tty and termious are linux operations
 
 
 
-#initialize velocities and step size lin/angular
+#initialize velocities and step size [linear, angular]
+burger_vel_max = [.22,2.84]
+waffle_lin_max = [.26, 1.78]
+increment = [.01, .1]
 
 
-def key():
-pass
+msg = """
 
+              W           Forward
+           A  S  D   Left, Backwards, Right
+              X            Stop
+
+              Try not to crash!!!
+              """
+
+def getKey():
+	pass
+
+
+#make sure velocity steps are smooth and in bounds
+
+def newVelocity (currentLin, currentAng):
+	#if key = # w
+		#increase velocity by step size if in bounds
+	#if key = # a
+		#increase velocity by step size if in bounds
+	#if key = # s
+		#increase velocity by step size if in bounds
+	#if key = # d
+		#increase velocity by step size if in bounds
+	#if key = # x
+		# set all velocities equal to 0
+
+	pass
+
+
+if __name__ == "__main__":
+	twist = Twist() #initialize twist variable for velocities
+	rospy.init_node('myteleop_key', anonymous=True) #initialize node
+	pub = rospy.Publisher('cmd_vel', Twist, queue_size=10) #initialize publisher
+	vel = [0,0] #[linear, angular]
+
+	try:
+		print(msg)
+		getKey()
+		while(1):
+			#set velociities based on keys
+			#assign velocotieis to twist
+			#publish  twis
+		pass
+	except:
+		print(error)
+	finally:
+		#twist velocities to 0 and publish 
+		pass
+
+
+
+
+	#publshing twist messages of a que size 10 to cmd_vel
