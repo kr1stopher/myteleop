@@ -3,6 +3,7 @@
 import rospy
 from geometry_msgs.msg import Twist
 import sys, select, tty, termios
+import time
 #tty and termious are linux operations
 
 
@@ -47,50 +48,106 @@ exit = """
         Ending controll transmition
         """
 def getKey():
-	pass
+    tty.setraw(sys.stdin.fileno())
+    rlist, _, _ =select.select([sys.stdin], [], [], .01)
+    if rlist:
+        newKey = sys.stdin.read(1)
+    else:
+        key = ''
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    return newKey #for testing newVelocity
 
 
 #make sure velocity steps are smooth and in bounds
 
 def newVelocity (key):
     newTwist = Twist() #new twist variable for  assigning new velocity vector
-    if (key==w and twist.linear.x < linMax):
-        #increase forwad speed
-        pass
-    if (key==s and twist.linear.x > -linMax):
-        #increase backwards speed
-        pass
-    if (key==a and twist.angular.z > -angMax):
-        pass
-    if (key==d and twist.angular < angMax):
-        pass
-    if (key==x): # x -> STOP
+    newTwist.linear.x = twist.linear.x; newTwist.linear.y = 0; newTwist.linear.z = 0;
+    newTwist.angular.x = 0; newTwist.angular.y = 0; newTwist.angular.z=0;
+    if (key=='w' and twist.linear.x < linMax):
+        newTwist.linear.x = twist.linear.x + linInc #increase forwad speed
+    if (key=='s' and twist.linear.x > -linMax):
+        newTwist.linear.x = newTwist.linear.x - linInc
+    if (key=='a' and twist.angular.z < angMax):
+        newTwist.angular.z = newTwist.angular.z + angInc
+    if (key=='d' and twist.angular > -angMax):
+        newTwist.angular.z = newTwist.angular.z - angInc
+    if (key=='x'): # x -> STOP
         twist.linear.x = 0.0
         twist.angular.z = 0.0
-    return newTwist()
+    #keys to instantly set velocity as desired [all fullspeed]
+    if (key == '9'):
+        pass
+    if (key == '8'):
+        newTwist.linear.x = linMax; newTwist.linear.y = 0; newTwist.linear.z = 0;
+        newTwist.angular.x = 0; newTwist.angular.y = 0; newTwist.angular.z=0;
+    if (key == '7'):
+        newTwist.linear.x = 0; newTwist.linear.y = 0; newTwist.linear.z = 0;
+        newTwist.angular.x = 0; newTwist.angular.y = 0; newTwist.angular.z=angMax;
+    if (key == '6'):
+        pass
+    if (key == '4'):
+        pass
+    if (key == '3'):
+        pass
+    if (key == '2'):
+        newTwist.linear.x = -linMax; newTwist.linear.y = 0; newTwist.linear.z = 0;
+        newTwist.angular.x = 0; newTwist.angular.y = 0; newTwist.angular.z=0;
+    if (key == '1'):
+        pass
+
+    return newTwist
 
 
 if __name__ == "__main__":
-	twist = Twist() #initialize twist variable for velocities
-	rospy.init_node('myteleop_key', anonymous=True) #initialize node
-	pub = rospy.Publisher('cmd_vel', Twist, queue_size=10) #initialize publisher
-	vel = [0,0] #[linear, angular]
+    #twist = Twist() #initialize twist variable for velocities
+    rospy.init_node('myteleop_key', anonymous=True) #initialize node
+    pub = rospy.Publisher('cmd_vel', Twist, queue_size=10) #initialize publisher
+    vel = [0,0] #[linear, angular]
+    try:
+        print(msg)
+        i=0
+        #while(1)
+        key = '7'
+        var = 0
+        while(1):
+            #print('Im inside')
+            # key = getKey() #receive input key from user
+            """
+            if (key ==''):
+                key = '7'
+            elif (key =='7' and i>100):
+                key = 'x'
+            #print("I'm inside v2")
+            #testing newVelocity function with key inputs
+            """
+            """
+            if (i%3 == 0):
+                key = 'a'
+            else:
+                key = 'w'
+            """
+            twist = newVelocity(key) #will update velocity within bounds based on user input
+            #twist.linear.x = .5*linMax #testing, broadacast 1/2 max speed constantly
+            pub.publish(twist) #publish twist to topic cmd_vel
+            print(key)
+            now = rospy.get_rostime()
+            print(now)
 
-	try:
-		print(msg)
-		i=0
-		#while(1)
-		while(i<10):
-			key = getKey() #receive input key from user
-			twist = newVelocity(key) #will update velocity within bounds based on user input
-		pub.publish(twist)
-		#publish twist to topic cmd_vel
-		i=i+1
-	except:
-		print(exit)
-	finally:
-		#twist velocities to 0 and publish
-		pass
+            if (key =='7' and var == 0):
+                start = rospy.get_rostime()
+                var =1
+            elif(key=='7' and var!=0 and False):
+                pass
+                #kevary='8'
+                #var = 0
+            else:
+                pass
+    except:            #i=i+1
+        print(exit)
+    finally:
+        #twist velocities to 0 and publish
+        pass
 
 
 
